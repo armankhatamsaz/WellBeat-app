@@ -1,16 +1,60 @@
-# React + Vite
+# WellBeat App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A comprehensive health and wellness tracking application built with React and Vite.
 
-Currently, two official plugins are available:
+## Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Follow these instructions to get the project up and running on your local machine.
 
-## React Compiler
+### Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js (v16 or higher recommended)
+- npm (comes with Node.js)
 
-## Expanding the ESLint configuration
+### Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clone the repository (if you haven't already)
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+## Available Scripts
+
+In the project directory, you can run:
+
+### `npm run dev`
+
+Runs the app in the development mode.\
+Open [http://localhost:5173](http://localhost:5173) to view it in your browser.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
+
+### `npm run build`
+
+Builds the app for production to the `dist` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+### `npm run preview`
+
+Locally preview the production build.\
+Run this after `npm run build` to test the production build locally.
+
+### `npm run lint`
+
+Runs ESLint to check for code quality and style issues.
+
+## Tech Stack
+
+- **Framework**: React 19
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **State Management**: Zustand
+- **Icons**: Lucide React
+- **Charts**: Recharts
+- **Animations**: Framer Motion

@@ -79,7 +79,7 @@ const AssessmentInputForm = () => {
         <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 h-full overflow-y-auto"
+            className="bg-white p-8 rounded-3xl shadow-xl border border-slate-200 h-full overflow-y-auto"
         >
             <h3 className="text-xl font-bold text-slate-900 mb-6">Enter Data</h3>
 

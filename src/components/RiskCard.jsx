@@ -4,22 +4,22 @@ import { AlertTriangle, CheckCircle, AlertCircle } from 'lucide-react';
 
 const RiskCard = ({ score, category }) => {
     const getColor = () => {
-        if (category === 'Low') return 'text-emerald-500 bg-emerald-50 border-emerald-100';
-        if (category === 'Moderate') return 'text-amber-500 bg-amber-50 border-amber-100';
-        return 'text-rose-500 bg-rose-50 border-rose-100';
+        if (category === 'Low') return 'text-emerald-700 bg-gradient-to-br from-emerald-50 to-white border-emerald-100 shadow-emerald-100/50';
+        if (category === 'Moderate') return 'text-amber-700 bg-gradient-to-br from-amber-50 to-white border-amber-100 shadow-amber-100/50';
+        return 'text-rose-700 bg-gradient-to-br from-rose-50 to-white border-rose-100 shadow-rose-100/50';
     };
 
     const getIcon = () => {
-        if (category === 'Low') return <CheckCircle size={32} />;
-        if (category === 'Moderate') return <AlertTriangle size={32} />;
-        return <AlertCircle size={32} />;
+        if (category === 'Low') return <CheckCircle size={32} className="text-emerald-500" />;
+        if (category === 'Moderate') return <AlertTriangle size={32} className="text-amber-500" />;
+        return <AlertCircle size={32} className="text-rose-500" />;
     };
 
     return (
         <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className={`p-6 rounded-3xl border-2 flex flex-col items-center justify-center gap-4 ${getColor()}`}
+            className={`p-6 rounded-3xl border shadow-lg flex flex-col items-center justify-center gap-4 ${getColor()}`}
         >
             <div className="flex items-center gap-3">
                 {getIcon()}

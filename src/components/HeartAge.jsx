@@ -9,9 +9,9 @@ const HeartAge = ({ realAge, heartAge }) => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="p-6 bg-white rounded-3xl shadow-sm border border-slate-100"
+            className="p-6 bg-white rounded-3xl shadow-xl border border-slate-200"
         >
-            <h3 className="text-lg font-bold text-slate-900 mb-6">Heart Age Comparison</h3>
+            <h3 className="text-lg font-bold text-deep-blue mb-6">Heart Age Comparison</h3>
 
             <div className="space-y-6">
                 <div>
@@ -47,7 +47,7 @@ const HeartAge = ({ realAge, heartAge }) => {
                 </div>
             </div>
 
-            <div className="mt-6 p-4 bg-slate-50 rounded-xl text-sm text-slate-600">
+            <div className="mt-6 p-4 bg-medical-teal/5 rounded-xl text-sm text-slate-600 border border-medical-teal/10">
                 {isOlder ? (
                     <p>Your heart age is <strong className="text-rose-600">older</strong> than your actual age. Consider lifestyle changes to lower your risk.</p>
                 ) : (

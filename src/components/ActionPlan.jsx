@@ -52,10 +52,10 @@ const ActionPlan = ({ metrics }) => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 h-full"
+            className="bg-white p-6 rounded-3xl shadow-xl border border-slate-200 h-full"
         >
-            <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-                <CheckCircle2 className="text-emerald-500" />
+            <h3 className="text-lg font-bold text-deep-blue mb-6 flex items-center gap-2">
+                <CheckCircle2 className="text-medical-teal" />
                 Personalized Action Plan
             </h3>
 
@@ -63,7 +63,7 @@ const ActionPlan = ({ metrics }) => {
                 {actions.map((action, index) => (
                     <div
                         key={index}
-                        className={`p-4 rounded-xl border ${action.color} transition-all hover:shadow-md`}
+                        className={`p-4 rounded-xl border ${action.color} transition-all hover:shadow-md hover:border-medical-teal/30`}
                     >
                         <div className="flex justify-between items-start mb-1">
                             <h4 className="font-bold">{action.title}</h4>
@@ -76,7 +76,7 @@ const ActionPlan = ({ metrics }) => {
                 ))}
             </div>
 
-            <button className="w-full mt-6 py-3 flex items-center justify-center gap-2 text-blue-600 font-bold hover:bg-blue-50 rounded-xl transition-colors">
+            <button className="w-full mt-6 py-3 flex items-center justify-center gap-2 text-medical-teal font-bold hover:bg-teal-50 rounded-xl transition-colors">
                 View Full Guide <ArrowRight size={18} />
             </button>
         </motion.div>

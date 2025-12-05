@@ -26,16 +26,16 @@ const HomeView = () => {
                 {/* Left Column: Greeting & Info */}
                 <div className="flex flex-col gap-8">
                     <div>
-                        <h1 className="text-4xl font-bold text-slate-900 mb-2">Good Morning, {user?.name?.split(' ')[0]}! ☀️</h1>
+                        <h1 className="text-4xl font-bold text-deep-blue mb-2">Good Morning, {user?.name?.split(' ')[0]}! ☀️</h1>
                         <div className="flex items-center gap-4">
                             <p className="text-lg text-slate-500">Ready to check in on your heart health?</p>
                             {isCheckedInToday ? (
-                                <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-bold">
+                                <div className="flex items-center gap-2 px-3 py-1 bg-teal-50 text-medical-teal rounded-full text-sm font-bold border border-teal-100">
                                     <Check size={16} />
                                     Check-in Complete
                                 </div>
                             ) : (
-                                <div className="flex items-center gap-2 px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-bold">
+                                <div className="flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-sm font-bold border border-amber-100">
                                     <Clock size={16} />
                                     Pending
                                 </div>

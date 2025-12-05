@@ -38,9 +38,9 @@ const RiskBreakdown = ({ metrics }) => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 h-full flex flex-col"
+            className="bg-white p-6 rounded-3xl shadow-xl border border-slate-200 h-full flex flex-col"
         >
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Risk Factor Breakdown</h3>
+            <h3 className="text-lg font-bold text-deep-blue mb-2">Risk Factor Breakdown</h3>
             <p className="text-sm text-slate-500 mb-4">Visualizing your primary risk contributors</p>
 
             <div className="flex-1 min-h-[250px]">
@@ -52,9 +52,9 @@ const RiskBreakdown = ({ metrics }) => {
                         <Radar
                             name="Risk Level"
                             dataKey="A"
-                            stroke="#ef4444"
+                            stroke="#0d9488"
                             strokeWidth={3}
-                            fill="#ef4444"
+                            fill="#0d9488"
                             fillOpacity={0.3}
                         />
                         <Tooltip

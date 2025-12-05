@@ -40,21 +40,21 @@ const Dashboard = () => {
                     className="flex flex-col md:flex-row md:items-center justify-between gap-4"
                 >
                     <div>
-                        <h2 className="text-3xl font-bold text-slate-900">Your Assessment</h2>
+                        <h2 className="text-3xl font-bold text-deep-blue">Your Assessment</h2>
                         <p className="text-slate-500">Based on your provided metrics</p>
                     </div>
 
                     <div className="flex items-center gap-3">
                         <button
                             onClick={resetAssessment}
-                            className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors font-medium"
+                            className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-deep-blue hover:bg-slate-100 rounded-lg transition-colors font-medium"
                         >
                             <ArrowLeft size={20} />
                             Recalculate
                         </button>
                         <button
                             onClick={handleProfile}
-                            className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl transition-colors font-bold shadow-sm"
+                            className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-deep-blue hover:border-medical-teal/50 hover:text-medical-teal hover:bg-slate-50 rounded-xl transition-all font-bold shadow-sm"
                         >
                             <User size={20} />
                             Profile
