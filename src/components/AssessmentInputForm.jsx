@@ -49,7 +49,7 @@ const AssessmentInputForm = () => {
         await runAssessment();
         
         setIsLoading(false);
-        setView('dashboard');
+        setView('assessment');
     };
 
     return (

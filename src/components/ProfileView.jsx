@@ -5,6 +5,7 @@ import { User, Save, ArrowLeft } from 'lucide-react';
 import CalendarView from './CalendarView';
 import TrendChart from './TrendChart';
 
+        // ارسال درخواست به آمازون
 const ProfileView = () => {
     const user = useHealthStore((state) => state.user);
     const updateProfile = useHealthStore((state) => state.updateProfile);

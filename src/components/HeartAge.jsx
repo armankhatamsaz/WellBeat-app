@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 
 const HeartAge = ({ realAge, heartAge }) => {
     const isOlder = heartAge > realAge;
+    const isEqual = heartAge === realAge; // اینجا حالت مساوی رو اضافه کردیم
 
     return (
         <motion.div
@@ -50,6 +51,8 @@ const HeartAge = ({ realAge, heartAge }) => {
             <div className="mt-6 p-4 bg-medical-teal/5 rounded-xl text-sm text-slate-600 border border-medical-teal/10">
                 {isOlder ? (
                     <p>Your heart age is <strong className="text-rose-600">older</strong> than your actual age. Consider lifestyle changes to lower your risk.</p>
+                ) : isEqual ? (
+                    <p>Good job! Your heart age exactly <strong className="text-emerald-600">matches</strong> your actual age. Keep maintaining a healthy lifestyle.</p>
                 ) : (
                     <p>Great job! Your heart age is <strong className="text-emerald-600">younger</strong> than your actual age.</p>
                 )}

@@ -162,7 +162,7 @@ export const useHealthStore = create((set, get) => ({
                 lipids: { total: metricsWithAge.ldl + metricsWithAge.hdl, hdl: metricsWithAge.hdl }
             };
 
-            set({ assessment: result, userMetrics: metricsWithAge });
+            set({ assessment: result, userMetrics: legacyMetrics });
             
             // فراخوانی ذخیره محلی برای آپدیت گرافیک‌ها
             get().saveAssessment(result, legacyMetrics);
