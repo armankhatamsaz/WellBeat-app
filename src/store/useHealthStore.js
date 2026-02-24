@@ -1,45 +1,35 @@
 import { create } from 'zustand';
-import { calculateRisk } from '../utils/mockRiskLogic';
 
 // Helper function to calculate streak
 const calculateStreak = (history) => {
     if (!history || history.length === 0) return 0;
-
-    // Sort by date descending
     const sortedHistory = [...history].sort((a, b) => new Date(b.date) - new Date(a.date));
-
     let streak = 0;
     const today = new Date().setHours(0, 0, 0, 0);
-
-    // Check if the most recent entry is today or yesterday to start the streak
     const lastEntryDate = new Date(sortedHistory[0].date).setHours(0, 0, 0, 0);
     const diffDays = (today - lastEntryDate) / (1000 * 60 * 60 * 24);
 
-    if (diffDays > 1) return 0; // Streak broken
-
+    if (diffDays > 1) return 0;
     streak = 1;
     let currentDate = lastEntryDate;
 
     for (let i = 1; i < sortedHistory.length; i++) {
         const entryDate = new Date(sortedHistory[i].date).setHours(0, 0, 0, 0);
         const diff = (currentDate - entryDate) / (1000 * 60 * 60 * 24);
-
         if (diff === 1) {
             streak++;
             currentDate = entryDate;
         } else if (diff === 0) {
-            // Same day, continue
             continue;
         } else {
-            break; // Streak broken
+            break;
         }
     }
     return streak;
 };
 
-// Helper to calculate age from birthDate
 const calculateAge = (birthDate) => {
-    if (!birthDate) return 45; // Default fallback
+    if (!birthDate) return 45;
     const today = new Date();
     const birth = new Date(birthDate);
     let age = today.getFullYear() - birth.getFullYear();
@@ -53,8 +43,8 @@ const calculateAge = (birthDate) => {
 export const useHealthStore = create((set, get) => ({
     isAuthenticated: false,
     user: null,
-    currentView: 'dashboard', // 'dashboard' or 'profile'
-    streakExtended: false, // Flag to trigger celebration
+    currentView: 'dashboard',
+    streakExtended: false,
 
     setView: (view) => set({ currentView: view }),
     resetStreakExtended: () => set({ streakExtended: false }),
@@ -63,150 +53,135 @@ export const useHealthStore = create((set, get) => ({
         age: 45,
         gender: 'male',
         sbp: 120,
-        lipids: { total: 200, hdl: 50 },
-        smoking: 0, // Cigarettes per day
+        ldl: 100,
+        hdl: 50,
+        smoker: false,
+        diabetes: false,
+        familyHistory: false
     },
 
     assessment: null,
 
-    // Auth Actions
-    login: (userData) => {
-        // Mock history for demonstration
-        const mockHistory = [
-            {
-                date: new Date(Date.now() - 86400000).toISOString(), // Yesterday
-                riskScore: 4,
-                riskCategory: 'Low',
-                metrics: { age: 55, gender: 'male', sbp: 118, smoking: 0, lipids: { total: 190, hdl: 55 } }
-            },
-            {
-                date: new Date(Date.now() - 86400000 * 2).toISOString(),
-                riskScore: 5,
-                riskCategory: 'Low',
-                metrics: { age: 55, gender: 'male', sbp: 120, smoking: 0, lipids: { total: 195, hdl: 52 } }
-            },
-            {
-                date: new Date(Date.now() - 86400000 * 5).toISOString(),
-                riskScore: 8,
-                riskCategory: 'Low',
-                metrics: { age: 55, gender: 'male', sbp: 125, smoking: 2, lipids: { total: 210, hdl: 48 } }
-            },
-            {
-                date: new Date(Date.now() - 86400000 * 12).toISOString(),
-                riskScore: 12,
-                riskCategory: 'Moderate',
-                metrics: { age: 55, gender: 'male', sbp: 135, smoking: 5, lipids: { total: 230, hdl: 45 } }
-            },
-            {
-                date: new Date(Date.now() - 86400000 * 25).toISOString(),
-                riskScore: 15,
-                riskCategory: 'High',
-                metrics: { age: 54, gender: 'male', sbp: 142, smoking: 10, lipids: { total: 245, hdl: 40 } }
-            },
-            {
-                date: new Date(Date.now() - 86400000 * 45).toISOString(),
-                riskScore: 14,
-                riskCategory: 'Moderate',
-                metrics: { age: 54, gender: 'male', sbp: 138, smoking: 12, lipids: { total: 240, hdl: 42 } }
-            },
-            {
-                date: new Date(Date.now() - 86400000 * 60).toISOString(),
-                riskScore: 18,
-                riskCategory: 'High',
-                metrics: { age: 54, gender: 'male', sbp: 145, smoking: 15, lipids: { total: 255, hdl: 38 } }
-            },
-            {
-                date: new Date(Date.now() - 86400000 * 90).toISOString(),
-                riskScore: 22,
-                riskCategory: 'High',
-                metrics: { age: 54, gender: 'male', sbp: 150, smoking: 20, lipids: { total: 265, hdl: 35 } }
-            },
-            {
-                date: new Date(Date.now() - 86400000 * 120).toISOString(),
-                riskScore: 20,
-                riskCategory: 'High',
-                metrics: { age: 53, gender: 'male', sbp: 148, smoking: 20, lipids: { total: 260, hdl: 36 } }
-            },
-            {
-                date: new Date(Date.now() - 86400000 * 150).toISOString(),
-                riskScore: 25,
-                riskCategory: 'Very High',
-                metrics: { age: 53, gender: 'male', sbp: 155, smoking: 25, lipids: { total: 270, hdl: 32 } }
+    // --- ۱. گرفتن تاریخچه از AWS هنگام ورود ---
+    login: async (userData) => {
+        try {
+            // اتصال به دیتابیس میلان (آیدی ۱ به عنوان تست)
+            const response = await fetch("https://plfqx4z54f.execute-api.eu-south-1.amazonaws.com/risk/history/1");
+            const dbData = await response.json();
+            
+            let realHistory = [];
+            if (response.ok && dbData.data) {
+                realHistory = dbData.data.map(item => ({
+                    date: item.test_date,
+                    riskScore: item.calculated_risk_score,
+                    riskCategory: item.risk_category,
+                    metrics: { 
+                        age: item.age, gender: item.gender, sbp: item.systolic_bp, 
+                        smoker: item.smoker ? 1 : 0, lipids: { total: item.ldl + item.hdl, hdl: item.hdl } 
+                    }
+                }));
             }
-        ];
 
-        const currentStreak = calculateStreak(mockHistory);
-        const latestMetrics = mockHistory[0]?.metrics || {};
-
-        set({
-            isAuthenticated: true,
-            user: {
-                name: 'Alex Doe',
-                email: 'alex.doe@example.com',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
-                height: 175,
-                weight: 70,
-                diabetes: false,
-                familyHistory: false,
-                streak: currentStreak,
-                riskGoal: 5, // Default goal
-                history: mockHistory,
-                birthDate: '1980-01-01', // Default birth date
-                ...userData
-            },
-            // Smart Defaults: Pre-fill metrics from latest history
-            userMetrics: {
-                age: calculateAge('1980-01-01'), // Initial calculation
-                gender: latestMetrics.gender || 'male',
-                sbp: latestMetrics.sbp || 120,
-                lipids: latestMetrics.lipids || { total: 200, hdl: 50 },
-                smoking: latestMetrics.smoking || 0,
-            }
-        });
+            const currentStreak = calculateStreak(realHistory);
+            
+            set({
+                isAuthenticated: true,
+                user: {
+                    name: userData.name || 'Alex Doe',
+                    email: userData.email || 'alex.doe@example.com',
+                    avatar: userData.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
+                    height: 175,
+                    weight: 70,
+                    streak: currentStreak,
+                    riskGoal: 5,
+                    history: realHistory,
+                    birthDate: '1980-01-01',
+                }
+            });
+        } catch (error) {
+            console.error("Error fetching AWS history:", error);
+            // Fallback in case of network error
+            set({ isAuthenticated: true, user: { ...userData, history: [], streak: 0 } });
+        }
     },
 
     logout: () => set({ isAuthenticated: false, user: null, assessment: null }),
 
-    // Profile Actions
     updateProfile: (updates) => set((state) => {
         const updatedUser = { ...state.user, ...updates };
-        // If birthDate changed, update userMetrics.age
         let updatedMetrics = { ...state.userMetrics };
         if (updates.birthDate) {
             updatedMetrics.age = calculateAge(updates.birthDate);
         }
-        return {
-            user: updatedUser,
-            userMetrics: updatedMetrics
-        };
+        return { user: updatedUser, userMetrics: updatedMetrics };
     }),
 
-    // Metrics & Assessment
     setMetrics: (metrics) => set((state) => ({
         userMetrics: { ...state.userMetrics, ...metrics }
     })),
 
-    runAssessment: () => {
+    // --- ۲. ارسال دیتا به AWS برای محاسبه ---
+    runAssessment: async () => {
         const { userMetrics, user } = get();
-        // Recalculate age to be sure
-        const currentAge = calculateAge(user.birthDate);
+        const currentAge = calculateAge(user?.birthDate);
         const metricsWithAge = { ...userMetrics, age: currentAge };
 
-        // Pass optional profile data to calculation if needed
-        const result = calculateRisk({ ...metricsWithAge, ...user });
+        // پکیج کردن دیتا دقیقاً مطابق مدل پایتون
+        const payload = {
+            user_id: 1, 
+            age: metricsWithAge.age,
+            gender: metricsWithAge.gender,
+            smoker: metricsWithAge.smoker,
+            systolic_bp: metricsWithAge.sbp,
+            ldl: metricsWithAge.ldl,
+            hdl: metricsWithAge.hdl,
+            diabetes: metricsWithAge.diabetes,
+            family_history: metricsWithAge.familyHistory
+        };
 
-        set({ assessment: result, userMetrics: metricsWithAge });
+        try {
+            const response = await fetch("https://plfqx4z54f.execute-api.eu-south-1.amazonaws.com/risk/static", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+            const data = await response.json();
+
+            // مپ کردن دیتای بک‌اند برای نمایش در فرانت‌اند
+            const parsedScore = parseFloat(data.calculated_risk_score);
+            const result = {
+                riskScore: parsedScore,
+                riskCategory: data.risk_category,
+                heartAge: metricsWithAge.age + (data.risk_category === "High" ? 10 : data.risk_category === "Intermediate" ? 5 : 0)
+            };
+
+            // برای اینکه کدهای اکشن‌پلن الکس کار کنه (تبدیل به فرمت قبلی)
+            const legacyMetrics = {
+                ...metricsWithAge,
+                smoking: metricsWithAge.smoker ? 1 : 0,
+                lipids: { total: metricsWithAge.ldl + metricsWithAge.hdl, hdl: metricsWithAge.hdl }
+            };
+
+            set({ assessment: result, userMetrics: metricsWithAge });
+            
+            // فراخوانی ذخیره محلی برای آپدیت گرافیک‌ها
+            get().saveAssessment(result, legacyMetrics);
+
+        } catch (error) {
+            console.error("AWS Validation/Network Error:", error);
+            alert("Error connecting to AWS Server. Check console.");
+        }
     },
 
-    saveAssessment: () => {
-        const { assessment, user, userMetrics } = get();
+    saveAssessment: (assessment, legacyMetrics) => {
+        const { user } = get();
         if (!assessment || !user) return;
 
         const newHistoryItem = {
             date: new Date().toISOString(),
             riskScore: assessment.riskScore,
             riskCategory: assessment.riskCategory,
-            metrics: { ...userMetrics }
+            metrics: legacyMetrics
         };
 
         const newHistory = [newHistoryItem, ...user.history];
@@ -214,13 +189,8 @@ export const useHealthStore = create((set, get) => ({
         const streakExtended = newStreak > (user.streak || 0);
 
         set({
-            user: {
-                ...user,
-                history: newHistory,
-                streak: newStreak
-            },
-            // assessment: null, // Keep assessment to show results
-            streakExtended // Trigger celebration if true
+            user: { ...user, history: newHistory, streak: newStreak },
+            streakExtended
         });
     },
 
